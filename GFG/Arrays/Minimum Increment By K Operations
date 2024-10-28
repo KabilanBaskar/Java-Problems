@@ -1,0 +1,39 @@
+You are given an array of n-elements, you have to find the number of operations needed to make all elements of array equal. 
+Where a single operation can increment an element by k. If it is not possible to make all elements equal print -1.
+
+Example : 
+    Input : arr[] = {4, 7, 19, 16},  k = 3
+    Output : 10
+    
+    Input : arr[] = {4, 4, 4, 4}, k = 3
+    Output : 0
+    
+    Input : arr[] = {4, 2, 6, 8}, k = 3
+    Output : -1
+
+Approach:
+    To solve this question we require to check whether all elements can became equal or not and that too only by incrementing k from elements value.
+    For this we have to check that the difference of any two elements should always be divisible by k. 
+    If it is so, then all elements can become equal otherwise they can not became equal in any case by incrementing k from them. 
+    Also, the number of operations required can be calculated by finding value of (max – Ai)/k for all elements. where max is maximum element of array.
+
+    Time : O(2*n)
+    Space : O(1)
+    code :
+        class Solution {
+            static int minOps(int arr[], int k) {
+                // Your code here
+                int max = 0;
+                int n = arr.length;
+                for(int i = 0; i < n; i++) {
+                    max = Math.max(max, arr[i]);
+                }
+                int sum = 0;
+                for(int i = 0;i < n; i++) {
+                    int diff = max - arr[i];
+                    if(diff % k != 0) return -1;
+                    sum += (diff/k);
+                }
+                return sum;
+            }
+        }
