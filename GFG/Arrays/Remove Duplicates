@@ -1,0 +1,156 @@
+Given a sorted array arr. Return the size of the modified array which contains only distinct elements.
+Note:
+1. Do not use set or HashMap to solve the problem.
+2. You must return the modified array size only where distinct elements are present and modify the original array such that all the distinct elements come at the beginning of the original array.
+
+Examples :
+    Input: arr = [2, 2, 2, 2, 2]
+    Output: [2]
+    Explanation: After removing all the duplicates only one instance of 2 will remain i.e. [2] 
+    so modified array will contains 2 at first position and you should return 1 after modifying the array, the driver code will print the modified array elements.
+
+    Input: arr = [1, 2, 4]
+    Output: [1, 2, 4]
+    Explation:  As the array does not contain any duplicates so you should return 3.
+
+Constraints:
+    1 ≤ arr.size() ≤ 105
+    1 ≤ ai ≤ 106
+
+Approach:
+    1.Using Hashset approach
+    2.Frequency array approach
+    3.Efficient array approach
+    4.Efficient arraylist approach
+
+1.Hashset Approach:
+    Use a hash set or dictionary to store elements already processed
+    Initialize index of result array as 0
+    Traverse through the input array. If an element is not in the hash set, put it at the result index and insert into the set
+
+    Time : O(n)
+    Space : O(n)
+    Code :
+      class GfG {
+          static int removeDuplicates(int[] arr) {
+              // To track seen elements
+              HashSet<Integer> s = new HashSet<>();
+              // To maintain the new size of the array
+              int idx = 0;  
+              for (int i = 0; i < arr.length; i++) {
+                  if (!s.contains(arr[i])) { 
+                      s.add(arr[i]);  
+                      arr[idx++] = arr[i];  
+                  }
+              }
+              // Return the size of the array 
+              // with unique elements
+              return idx;
+          }
+          public static void main(String[] args) {
+              int[] arr = {1, 2, 2, 3, 4, 4, 4, 5, 5};
+              int newSize = removeDuplicates(arr);
+              for (int i = 0; i < newSize; i++) {
+                  System.out.print(arr[i] + " ");
+              }
+          }
+      }    
+
+2.Frequency Array Approach:
+    Create a new array with max element + 1. Put 1 to frequency array, array element is the index to frequency array.
+    Print the index in frequency array with 1.
+
+    Time : O(3*n)
+    Space : O(n)
+    Code :
+      class GfG {
+          static int removeDuplicates(int[] arr) {
+              // To maintain the new size of the array
+              int max = 0;
+              for(int i = 0; i < arr.length; i++) {
+                  max = Math.max(max, arr[i]);
+              }
+              int[] fre = new int[max+1];
+              for(int i = 0; i < arr.length; i++) {
+                  fre[arr[i]] = 1;
+              }
+              int idx = 0;
+              for(int i = 0; i < max+1; i++) {
+                  if(fre[i] != 0) {
+                    arr[idx++] = fre[i];
+                  }
+              }
+              return idx;
+          }
+          public static void main(String[] args) {
+              int[] arr = {1, 2, 2, 3, 4, 4, 4, 5, 5};
+              int newSize = removeDuplicates(arr);
+              for (int i = 0; i < newSize; i++) {
+                  System.out.print(arr[i] + " ");
+              }
+          }
+      }   
+
+
+3.Efficient Array Approach:
+      Since the array is sorted, we do not need to maintain a hash set. 
+      All occurrences of an element would be consecutive. So we mainly need to check if the current element is same as the previous element or not.
+      
+      Start with idx = 1 (idx is going to hold the index of the next distinct item. 
+      Since there is nothing before the first item, we consider it as the first distinct item and begin idx with 1.
+      Loop through the array for i = 0 to arr.size() – 1
+            At each index i, if arr[i] is different from arr[i-1], assign arr[idx] = arr[i] and increment idx.
+      After the loop, arr contains the unique elements in the first idx positions.
+
+      Time : O(n)
+      Space : O(1)
+      Code : 
+        class GfG {
+            static int removeDuplicates(int[] arr) {
+                int n = arr.length;
+                if (n <= 1)
+                    return n;
+                int idx = 1; // Start from the second element
+                for (int i = 1; i < n; i++) {
+                    if (arr[i] != arr[i - 1]) {
+                        arr[idx++] = arr[i];
+                    }
+                }
+                return idx;
+            }
+            public static void main(String[] args) {
+                int[] arr = {1, 2, 2, 3, 4, 4, 4, 5, 5};
+                int newSize = removeDuplicates(arr);
+                for (int i = 0; i < newSize; i++) {
+                    System.out.print(arr[i] + " ");
+                }
+            }
+        }                
+
+
+
+4. Efficient ArrayList Approach:                          
+       Elements are given in arraylist. we have to use arraylist set method to assign values.
+       Use a arraylist equals method to check arr[i] != arr[i - 1]
+
+       Time : O(n)     
+       Space : O(1)
+       Code :
+          class Solution {
+              // Function to remove duplicates from the given array
+              public int remove_duplicate(List<Integer> arr) {
+                  // Code Here
+                  int n = arr.size();
+                  if (n <= 1)
+                      return n;
+                  int idx = 0; // Start from the second element
+                  for (int i = 1; i < n; i++) {
+                      if(!arr.get(idx).equals(arr.get(i))) {
+                          idx += 1;
+                          arr.set(idx, arr.get(i));
+                      }
+                      
+                  }
+                  return idx+1;
+              }
+          }
